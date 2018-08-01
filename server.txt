@@ -1,0 +1,6 @@
+ssh root@95.161.227.235
+port: 3003
+user: ubuntu
+password: wtHjhCz8Dj
+
+ssh -p 3003 root@95.161.227.235

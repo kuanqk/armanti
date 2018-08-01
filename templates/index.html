@@ -1,0 +1,106 @@
+<html>
+<head>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/static/css/index.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+</head>
+<div class="container-fluid bg-info">
+    <div class="modal-dialog" style="width: 80%; zoom: 2">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>{{ question }}</h3>
+            </div>
+            <div class="modal-body">
+                <div class="col-xs-3 col-xs-offset-5">
+                    <div id="loadbar" style="display: none;">
+                        <div class="blockG" id="rotateG_01"></div>
+                        <div class="blockG" id="rotateG_02"></div>
+                        <div class="blockG" id="rotateG_03"></div>
+                        <div class="blockG" id="rotateG_04"></div>
+                        <div class="blockG" id="rotateG_05"></div>
+                        <div class="blockG" id="rotateG_06"></div>
+                        <div class="blockG" id="rotateG_07"></div>
+                        <div class="blockG" id="rotateG_08"></div>
+                    </div>
+                </div>
+
+                <div class="modal-footer text-muted">
+                    <span id="answer">Думай, как Арман и Аскар</span>
+                </div>
+
+                <div class="quiz" id="quiz" data-toggle="buttons">
+                    <label class="element-animation1 btn btn-lg btn-primary btn-block"><span class="btn-label"><i
+                            class="glyphicon glyphicon-chevron-right"></i></span> <input type="radio" name="q_answer"
+                                                                                         value="1">{{ answer1 }}</label>
+                    <label class="element-animation2 btn btn-lg btn-primary btn-block"><span class="btn-label"><i
+                            class="glyphicon glyphicon-chevron-right"></i></span> <input type="radio" name="q_answer"
+                                                                                         value="2">{{ answer2 }}</label>
+                    <label class="element-animation3 btn btn-lg btn-primary btn-block"><span class="btn-label"><i
+                            class="glyphicon glyphicon-chevron-right"></i></span> <input type="radio" name="q_answer"
+                                                                                         value="3">{{ answer3 }}</label>
+                    <label class="element-animation4 btn btn-lg btn-primary btn-block"><span class="btn-label"><i
+                            class="glyphicon glyphicon-chevron-right"></i></span> <input type="radio" name="q_answer"
+                                                                                         value="4">{{ answer4 }}</label>
+                </div>
+
+                <div class="quiz" id="play_correct" style="display: none;">
+                    <br>
+                    Правильный ответ:
+                    <audio controls>
+                        <source src="/static/audio/{{ audio }}" type="audio/mpeg">
+                    </audio>
+                    <br>
+                    <br>
+                    <br>
+                    <button class="btn btn-lg btn-primary btn-block" onclick="window.location.replace('/')">Следующий
+                        вопрос
+                    </button>
+                </div>
+            </div>
+            <div style="display: block">
+                <div class="modal-footer text-muted">
+                    <button class="btn btn-sm btn-primary" onclick="window.location.replace('/dalila')">С днем рождения, жаным!</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script language="JavaScript">
+    $(function () {
+        $ans = "{{ correct }}";
+        var loading = $('#loadbar').hide();
+        $('#play_correct').hide();
+        $(document)
+            .ajaxStart(function () {
+                loading.show();
+            }).ajaxStop(function () {
+            loading.hide();
+        });
+
+        $("label.btn").on('click', function () {
+            var choice = $(this).find('input:radio').val();
+            $('#loadbar').show();
+            $('#quiz').fadeOut();
+            setTimeout(function () {
+                $("#answer").html($(this).checking(choice));
+                $('#loadbar').fadeOut();
+                if ($(this).checking(choice) === "НЕПРАВИЛЬНО")
+                    $('#quiz').show();
+                else
+                    $('#play_correct').show();
+                /* something else */
+            }, 2000);
+        });
+
+
+        $.fn.checking = function (ck) {
+            if (ck !== $ans)
+                return 'НЕПРАВИЛЬНО';
+            else
+                return 'ПРАВИЛЬНО';
+        };
+    });
+
+</script>
+</html>
